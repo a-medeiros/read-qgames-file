@@ -5,6 +5,7 @@ import Papa from 'papaparse';
 function App() {
   const [gameData, setGameData] = useState();
   let match = {}
+  let death_cause_by_match = {}
 
   useEffect(() => {
     const readLogFile = async () => {
@@ -33,6 +34,10 @@ function App() {
           players: [],
           kills: {},
         }
+
+        death_cause_by_match[`game-${count}`] = {
+          kills_by_means: {}
+        }
       }
 
       if (line[0].includes('ClientUserinfoChanged')) {
@@ -48,10 +53,17 @@ function App() {
       if (line[0].includes('Kill')) {
         const split1 = line[0].split(':');
         const split2 = split1[3].split('by');
-        // const death_cause = split2[1];
+        const death_cause = split2[1].trim();
         const split3 = split2[0].split('killed');
         const killer = split3[0].trim();
         const deadPlayer = split3[1].trim();
+
+        if (death_cause in death_cause_by_match[`game-${count}`].kills_by_means) {
+          death_cause_by_match[`game-${count}`].kills_by_means[death_cause] += 1;
+        } else {
+          death_cause_by_match[`game-${count}`].kills_by_means[death_cause] = 1;
+        }
+
         Object.keys(match[`game_${count}`].kills).forEach((key, index) => {
           if (killer === '<world>' && deadPlayer === key) {
             match[`game_${count}`].total_kills += 1;
@@ -66,7 +78,8 @@ function App() {
     })
   }
   getMatchData();
-  console.log(match);
+  console.log('match data', match);
+  console.log('death cause data', death_cause_by_match);
   return (
     <div>
       <h3>Hello, world!</h3>
