@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import qgame from './qgames.log';
 import Papa from 'papaparse';
+import { Tabs } from 'antd';
+
+const { TabPane } = Tabs;
 
 function App() {
   const [gameData, setGameData] = useState();
@@ -78,15 +81,20 @@ function App() {
     })
   }
   getMatchData();
-  console.log('match data', match);
-  console.log('death cause data', death_cause_by_match);
+
   return (
-    <div>
-      <h3>Hello, world!</h3>
-      <ul>
-        <li>Informações gerais de cada partida</li>
-        <li>Causa das mortes por partida</li>
-      </ul>
+    <div className="container">
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Reports of each match" key="1">
+          <pre>{JSON.stringify(match, null, 2)}</pre>
+        </TabPane>
+        <TabPane tab="Death cause reports of each match" key="2">
+          <pre>{JSON.stringify(death_cause_by_match, null, 2)}</pre>
+        </TabPane>
+        <TabPane tab="Player Ranking" key="3">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
     </div>
   );
 }
