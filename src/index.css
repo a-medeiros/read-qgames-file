@@ -8,3 +8,17 @@ body {
 .container {
   padding: 30px 40px;
 }
+
+.rankingPosition {
+  display: flex;
+}
+
+.playerName {
+  margin: 0;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.playerKills {
+  color: grey;
+}

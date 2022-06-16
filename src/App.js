@@ -9,6 +9,7 @@ function App() {
   const [gameData, setGameData] = useState();
   let match = {}
   let death_cause_by_match = {}
+  let player_ranking = {}
 
   useEffect(() => {
     const readLogFile = async () => {
@@ -50,6 +51,10 @@ function App() {
         if (!match[`game_${count}`].players.includes(playerName)) {
           match[`game_${count}`].players.push(playerName);
           match[`game_${count}`].kills[playerName] = 0;
+
+          if (playerName in player_ranking === false) {
+            player_ranking[playerName] = 0;
+          }
         }
       }
 
@@ -75,12 +80,27 @@ function App() {
           if (key === killer) {
             match[`game_${count}`].total_kills += 1;
             match[`game_${count}`].kills[key] += 1;
+
+            player_ranking[key] += 1;
           }
         })
       }
     })
   }
   getMatchData();
+
+  // console.log(player_ranking);
+  let playerRankingData = Object.keys(player_ranking).map(key => {
+    let obj = {
+      player: key,
+      kills: player_ranking[key]
+    }
+    return obj;
+  })
+  
+  playerRankingData.sort((playerA, playerB) => playerB.kills - playerA.kills);
+  console.log(playerRankingData);
+  
 
   return (
     <div className="container">
@@ -92,7 +112,15 @@ function App() {
           <pre>{JSON.stringify(death_cause_by_match, null, 2)}</pre>
         </TabPane>
         <TabPane tab="Player Ranking" key="3">
-          Content of Tab Pane 3
+          {playerRankingData.map((player, index) => {
+            return (
+              <div className="rankingPosition">
+                <p>{index+1}°: </p>
+                <p className="playerName">{player.player}</p>
+                <p className="playerKills">{player.kills}</p>
+              </div>
+            )
+          })}
         </TabPane>
       </Tabs>
     </div>
