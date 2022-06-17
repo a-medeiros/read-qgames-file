@@ -89,7 +89,6 @@ function App() {
   }
   getMatchData();
 
-  // console.log(player_ranking);
   let playerRankingData = Object.keys(player_ranking).map(key => {
     let obj = {
       player: key,
@@ -97,10 +96,7 @@ function App() {
     }
     return obj;
   })
-  
   playerRankingData.sort((playerA, playerB) => playerB.kills - playerA.kills);
-  console.log(playerRankingData);
-  
 
   return (
     <div className="container">
@@ -108,7 +104,7 @@ function App() {
         <TabPane tab="Reports of each match" key="1">
           <pre>{JSON.stringify(match, null, 2)}</pre>
         </TabPane>
-        <TabPane tab="Death cause reports of each match" key="2">
+        <TabPane tab="Death cause report by match" key="2">
           <pre>{JSON.stringify(death_cause_by_match, null, 2)}</pre>
         </TabPane>
         <TabPane tab="Player Ranking" key="3">
@@ -117,7 +113,7 @@ function App() {
               <div className="rankingPosition">
                 <p>{index+1}°: </p>
                 <p className="playerName">{player.player}</p>
-                <p className="playerKills">{player.kills}</p>
+                <p>{player.kills}</p>
               </div>
             )
           })}
