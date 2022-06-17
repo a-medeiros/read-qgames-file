@@ -108,6 +108,7 @@ function App() {
           <pre>{JSON.stringify(death_cause_by_match, null, 2)}</pre>
         </TabPane>
         <TabPane tab="Player Ranking" key="3">
+          <h2>Ranking</h2>
           {playerRankingData.map((player, index) => {
             return (
               <div className="rankingPosition">
